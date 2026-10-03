@@ -99,24 +99,39 @@ test("error: more than one file", () => {
   assert.equal(stderr, "paiseh, khanina hanya bisa membaca satu file sekaligus\n");
 });
 
-test("a compile error stops the program before it runs", () => {
+const runFile = (source) =>
   withTempDir((dir) => {
-    const file = join(dir, "salah.khanina");
-    writeFileSync(file, 'kong("sebelum")\nna si (si) {\n  kong("x")\n');
-    const { stdout, stderr, status } = khanina(file);
-    assert.equal(status, 1);
-    assert.equal(stdout, "");
-    assert.match(stderr, /^paiseh, baris 2 kolom 12: kurung kurawal belum ditutup\n/);
+    const file = join(dir, "program.khanina");
+    writeFileSync(file, source);
+    return khanina(file);
+  });
+
+test("a lexer error stops the program before it runs and shows the line", () => {
+  assert.deepEqual(runFile('kong("sebelum")\nu x = 1 @ 2\n'), {
+    stdout: "",
+    stderr: 'paiseh, baris 2 kolom 9: karakter "@" tidak dikenal\n  2 | u x = 1 @ 2\n    |         ^\n',
+    status: 1,
   });
 });
 
-test("a runtime error gets the paiseh prefix and a failing exit code", () => {
-  withTempDir((dir) => {
-    const file = join(dir, "runtime.khanina");
-    writeFileSync(file, 'kong("sebelum")\nkong(belum_ada)\nkong("sesudah")\n');
-    const { stdout, stderr, status } = khanina(file);
-    assert.equal(status, 1);
-    assert.equal(stdout, "sebelum\n");
-    assert.match(stderr, /^paiseh, /);
+test("a parser error stops the program before it runs and shows the line", () => {
+  assert.deepEqual(runFile('kong("sebelum")\nna si (si) {\n  kong("x")\n'), {
+    stdout: "",
+    stderr: "paiseh, baris 2 kolom 12: kurung kurawal belum ditutup\n  2 | na si (si) {\n    |            ^\n",
+    status: 1,
   });
+});
+
+test("a runtime error shows the paiseh message and the .khanina line", () => {
+  assert.deepEqual(runFile('kong("sebelum")\n\nkong(belum_ada)\nkong("sesudah")\n'), {
+    stdout: "sebelum\n",
+    stderr: 'paiseh, baris 3: "belum_ada" belum dibuat\n  3 | kong(belum_ada)\n',
+    status: 1,
+  });
+});
+
+test("a runtime error inside a function points at the line in the function", () => {
+  const { stderr, status } = runFile("co bagi(a, b) {\n  tui a / b + c\n}\nkong(bagi(1, 2))\n");
+  assert.equal(status, 1);
+  assert.equal(stderr, 'paiseh, baris 2: "c" belum dibuat\n  2 |   tui a / b + c\n');
 });

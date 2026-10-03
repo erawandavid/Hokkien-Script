@@ -246,8 +246,18 @@ paiseh, baris 3 kolom 5: kurung kurawal belum ditutup
 (`baris` = line, `kolom` = column; the example means "the curly brace was
 never closed".) The format applies to errors while reading the code (lexer),
 while building the syntax tree (parser), and while using the CLI (file not
-found, extension is not `.khanina`). Errors raised while the program runs
-also get the `paiseh` prefix.
+found, extension is not `.khanina`).
+
+Errors raised while the program runs also get the `paiseh` prefix. They show
+the `.khanina` line where they happened, without a column, and common
+JavaScript errors are translated:
+
+```
+paiseh, baris 4: "x" belum dibuat
+```
+
+The `khanina` command prints the offending source line under the message,
+with a `^` under the column when there is one.
 
 ## 7. Out of scope for the MVP
 

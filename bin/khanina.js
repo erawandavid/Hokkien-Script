@@ -6,7 +6,7 @@ import { extname, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import vm from "node:vm";
 import { compileWithSourceLines, tokenize, parse, KhaninaError } from "../src/index.js";
-import { formatMessage } from "../src/errors.js";
+import { formatMessage, codeFrame, runtimeMessage, runtimeLine } from "../src/errors.js";
 
 const USAGE = `Usage: khanina <file.khanina> [options]
 
@@ -75,14 +75,22 @@ function showTokens(source) {
   }
 }
 
+// Prints an error message, followed by the source line it points at.
+function report(message, source, line, column = null) {
+  console.error(message);
+  const frame = line == null ? "" : codeFrame(source, line, column);
+  if (frame) console.error(frame);
+  process.exitCode = 1;
+}
+
 // Runs the program in its own context, so names it creates cannot clash
 // with the globals this command relies on.
-function runProgram(code, file) {
+function runProgram(source, code, sourceLines, file) {
   try {
     vm.runInNewContext(code, { console }, { filename: file });
   } catch (error) {
-    console.error(formatMessage(error?.message ?? String(error)));
-    process.exitCode = 1;
+    const line = runtimeLine(error, file, sourceLines);
+    report(formatMessage(runtimeMessage(error), line), source, line);
   }
 }
 
@@ -113,7 +121,7 @@ function main() {
     if (values.tokens) showTokens(source);
     if (values.ast) console.log(JSON.stringify(parse(tokenize(source)), null, 2));
 
-    const { code } = compileWithSourceLines(source);
+    const { code, sourceLines } = compileWithSourceLines(source);
     if (values.out !== undefined) {
       if (resolve(values.out) === resolve(file)) {
         fail("--out tidak boleh menimpa file .khanina itu sendiri");
@@ -127,11 +135,10 @@ function main() {
     }
     if (values.tokens || values.ast || values.out !== undefined) return;
 
-    runProgram(code, file);
+    runProgram(source, code, sourceLines, file);
   } catch (error) {
     if (!(error instanceof KhaninaError)) throw error;
-    console.error(error.message);
-    process.exitCode = 1;
+    report(error.message, source, error.line, error.column);
   }
 }
 
