@@ -1,0 +1,35 @@
+{
+  "name": "hokkien-script",
+  "version": "0.1.0",
+  "description": "A small programming language with Medan Hokkien keywords that compiles to JavaScript.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": "./src/index.js",
+  "bin": {
+    "khanina": "bin/khanina.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "SPEC.md"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "hokkien",
+    "programming-language",
+    "transpiler",
+    "compiler",
+    "khanina"
+  ],
+  "author": "erawandavid",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erawandavid/Hokkien-Script.git"
+  }
+}
