@@ -1,0 +1,52 @@
+{
+  "name": "hokkien-script",
+  "displayName": "Hokkien Script",
+  "description": "Syntax highlighting and snippets for Hokkien Script (.khanina) files.",
+  "version": "0.1.0",
+  "publisher": "erawandavid",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erawandavid/Hokkien-Script.git",
+    "directory": "editors/vscode"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "hokkien",
+    "khanina"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "khanina",
+        "aliases": [
+          "Hokkien Script",
+          "khanina"
+        ],
+        "extensions": [
+          ".khanina"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "khanina",
+        "scopeName": "source.khanina",
+        "path": "./syntaxes/khanina.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "khanina",
+        "path": "./snippets.json"
+      }
+    ]
+  }
+}

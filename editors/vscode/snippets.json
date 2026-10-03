@@ -1,0 +1,32 @@
+{
+  "na si": {
+    "prefix": "nasi",
+    "body": ["na si (${1:kondisi}) {", "\t$0", "}"],
+    "description": "na si (if)"
+  },
+  "na si ... na bo": {
+    "prefix": "nasinabo",
+    "body": ["na si (${1:kondisi}) {", "\t$2", "} na bo {", "\t$0", "}"],
+    "description": "na si ... na bo (if ... else)"
+  },
+  "na bo na si": {
+    "prefix": "nabonasi",
+    "body": ["na bo na si (${1:kondisi}) {", "\t$0", "}"],
+    "description": "na bo na si (else if)"
+  },
+  "koh": {
+    "prefix": "koh",
+    "body": ["koh (${1:kondisi}) {", "\t$0", "}"],
+    "description": "koh (while)"
+  },
+  "co": {
+    "prefix": "co",
+    "body": ["co ${1:nama}(${2}) {", "\t$0", "}"],
+    "description": "co (function)"
+  },
+  "kong": {
+    "prefix": "kong",
+    "body": ["kong(${1})"],
+    "description": "kong (console.log)"
+  }
+}
