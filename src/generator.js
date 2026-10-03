@@ -34,9 +34,13 @@ const ATOM_PRECEDENCE = 8;
 
 const JS_OPERATORS = { "==": "===", "!=": "!==" };
 
+// Values are turned into plain text before printing, so the output never
+// carries terminal colors and "%" in a string is never read as a format.
 const KONG_HELPER = [
   "function $kong(...values) {",
-  '  console.log(...values.map((v) => (v === true ? "si" : v === false ? "em si" : v == null ? "bo" : v)));',
+  "  const show = (v) =>",
+  '    v === true ? "si" : v === false ? "em si" : v == null ? "bo" : typeof v === "function" ? `[Function: ${v.name}]` : String(v);',
+  '  console.log(values.map(show).join(" "));',
   "}",
 ];
 

@@ -135,3 +135,11 @@ test("a runtime error inside a function points at the line in the function", () 
   assert.equal(status, 1);
   assert.equal(stderr, 'paiseh, baris 2: "c" belum dibuat\n  2 |   tui a / b + c\n');
 });
+
+test("output has no terminal colors, even when colors are forced", () => {
+  const result = spawnSync(process.execPath, [cli, example("hitung.khanina")], {
+    encoding: "utf8",
+    env: { ...process.env, FORCE_COLOR: "1" },
+  });
+  assert.equal(result.stdout, "11\n12\n13\n");
+});

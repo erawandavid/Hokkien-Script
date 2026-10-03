@@ -155,3 +155,8 @@ test("every example runs with the expected output", async () => {
     assert.equal(stdout, expected, file);
   }
 });
+
+test("kong prints % signs and functions as plain text", () => {
+  const { stdout } = runJs(compile('co tambah(a, b) {\n  tui a + b\n}\nkong("%d persen", 5)\nkong(tambah)'));
+  assert.equal(stdout, "%d persen 5\n[Function: tambah]\n");
+});
