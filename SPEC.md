@@ -212,6 +212,8 @@ koh (i <= 3) {
 is translated to JavaScript like this:
 
 ```js
+"use strict";
+
 function $kong(...values) {
   console.log(...values.map((v) => (v === true ? "si" : v === false ? "em si" : v == null ? "bo" : v)));
 }
@@ -227,7 +229,9 @@ while (i <= 3) {
 }
 ```
 
-The `$kong` helper is only added when the program uses `kong`. Names that
+The output always starts with `"use strict";`, so assigning to a name that
+was never created is an error however the JavaScript file is run. The `$kong`
+helper is only added when the program uses `kong`. Names that
 start with `$` can never clash with user names, because `$` is not allowed in
 Hokkien Script names.
 
