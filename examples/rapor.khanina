@@ -1,0 +1,17 @@
+// na bo na si picks one of several conditions
+be pian BATAS_A = 90
+be pian BATAS_B = 70
+
+co nilai_huruf(skor) {
+  na si (skor >= BATAS_A) {
+    tui "A"
+  } na bo na si (skor >= BATAS_B) {
+    tui "B"
+  } na bo {
+    tui "C"
+  }
+}
+
+kong("Ameng:", nilai_huruf(95))
+kong("Acong:", nilai_huruf(75))
+kong("Ahui:", nilai_huruf(50))

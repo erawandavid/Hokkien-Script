@@ -1,0 +1,12 @@
+// print the odd numbers from 1 to 7
+u i = 0
+koh (si) {
+  i = i + 1
+  na si (i % 2 == 0) {
+    tiau ke
+  }
+  na si (i > 7) {
+    cau
+  }
+  kong(i)
+}
