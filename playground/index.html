@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hokkien Script Playground</title>
+    <meta name="description" content="Write and run Hokkien Script, a small programming language with Medan Hokkien keywords, in your browser." />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="playground.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-name">Hokkien Script</span>
+        <span class="brand-tag">playground</span>
+      </div>
+      <div class="actions">
+        <label class="visually-hidden" for="examples">Load an example</label>
+        <select id="examples">
+          <option value="">Examples…</option>
+          <option value="halo">halo: hello world</option>
+          <option value="kondisi">kondisi: na si / na bo</option>
+          <option value="rapor">rapor: na bo na si</option>
+          <option value="hitung">hitung: co, tui, koh</option>
+          <option value="ganjil">ganjil: cau, tiau ke</option>
+          <option value="nilai">nilai: si, em si, bo</option>
+        </select>
+        <button id="share" type="button" class="button">Share</button>
+        <button id="run" type="button" class="button primary" title="Run (Ctrl+Enter or ⌘+Enter)">
+          Run <span aria-hidden="true">▶</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel" aria-label="Editor">
+        <div class="panel-head">
+          <span class="panel-title">program.khanina</span>
+          <span class="hint" id="hint">Ctrl+Enter to run</span>
+        </div>
+        <div class="editor">
+          <div class="gutter" id="gutter" aria-hidden="true"></div>
+          <div class="code">
+            <pre class="highlight" id="highlight" aria-hidden="true"></pre>
+            <textarea
+              id="source"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              aria-label="Hokkien Script source code"
+            ></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Result">
+        <div class="panel-head tabs" role="tablist">
+          <button type="button" role="tab" id="tab-output" class="tab" aria-selected="true" aria-controls="output">
+            Output
+          </button>
+          <button type="button" role="tab" id="tab-js" class="tab" aria-selected="false" aria-controls="javascript">
+            JavaScript
+          </button>
+          <span class="status" id="status"></span>
+        </div>
+        <pre class="result" id="output" role="tabpanel" aria-labelledby="tab-output" aria-live="polite"></pre>
+        <pre class="result" id="javascript" role="tabpanel" aria-labelledby="tab-js" hidden></pre>
+      </section>
+    </main>
+
+    <section class="reference" aria-label="Keywords">
+      <h2>Keywords</h2>
+      <dl class="keywords">
+        <div><dt>u</dt><dd>let</dd></div>
+        <div><dt>be pian</dt><dd>const</dd></div>
+        <div><dt>na si</dt><dd>if</dd></div>
+        <div><dt>na bo</dt><dd>else</dd></div>
+        <div><dt>na bo na si</dt><dd>else if</dd></div>
+        <div><dt>koh</dt><dd>while</dd></div>
+        <div><dt>cau</dt><dd>break</dd></div>
+        <div><dt>tiau ke</dt><dd>continue</dd></div>
+        <div><dt>co</dt><dd>function</dd></div>
+        <div><dt>tui</dt><dd>return</dd></div>
+        <div><dt>kong</dt><dd>console.log</dd></div>
+        <div><dt>si</dt><dd>true</dd></div>
+        <div><dt>em si</dt><dd>false</dd></div>
+        <div><dt>bo</dt><dd>null</dd></div>
+      </dl>
+      <p class="footnote">
+        Full rules in the
+        <a href="https://github.com/erawandavid/Hokkien-Script/blob/main/SPEC.md">language spec</a>. Source on
+        <a href="https://github.com/erawandavid/Hokkien-Script">GitHub</a>.
+      </p>
+    </section>
+  </body>
+</html>

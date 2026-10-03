@@ -46,16 +46,28 @@ export function codeFrame(source, line, column = null) {
 // generator); error messages show them as the user wrote them.
 const userName = (name) => name.replace(/^\$/, "");
 
+// Node.js and Chrome messages come first, followed by Firefox and Safari ones
+// (used by the web playground).
+const notCreated = (name) => `"${userName(name)}" belum dibuat`;
+const usedTooEarly = (name) => (name ? `"${userName(name)}" dipakai sebelum dibuat` : "nama dipakai sebelum dibuat");
+const createdTwice = (name) => `"${userName(name)}" sudah dibuat`;
+const constant = () => "nilai be pian tidak bisa diubah";
+const tooDeep = () => "fungsi memanggil dirinya sendiri terlalu dalam, mungkin rekursinya tidak pernah berhenti";
+
 const RUNTIME_MESSAGES = [
-  [/^(\S+) is not defined$/, (name) => `"${userName(name)}" belum dibuat`],
-  [/^Cannot access '(.+)' before initialization$/, (name) => `"${userName(name)}" dipakai sebelum dibuat`],
-  [/^Identifier '(.+)' has already been declared$/, (name) => `"${userName(name)}" sudah dibuat`],
-  [/^Assignment to constant variable\.$/, () => "nilai be pian tidak bisa diubah"],
-  [/^(.+) is not a function$/, (callee) => `"${userName(callee)}" bukan fungsi, jadi tidak bisa dipanggil`],
-  [
-    /^Maximum call stack size exceeded$/,
-    () => "fungsi memanggil dirinya sendiri terlalu dalam, mungkin rekursinya tidak pernah berhenti",
-  ],
+  [/^(\S+) is not defined$/, notCreated],
+  [/^Can't find variable: (\S+)$/, notCreated],
+  [/^Cannot access '(.+)' before initialization$/, usedTooEarly],
+  [/^can't access lexical declaration '(.+)' before initialization$/, usedTooEarly],
+  [/^Cannot access uninitialized variable\.$/, () => usedTooEarly(null)],
+  [/^Identifier '(.+)' has already been declared$/, createdTwice],
+  [/^redeclaration of (?:let|const) (\S+)$/, createdTwice],
+  [/^Assignment to constant variable\.$/, constant],
+  [/^invalid assignment to const '(.+)'$/, constant],
+  [/^Attempted to assign to readonly property\.$/, constant],
+  [/^(.+?) is not a function/, (callee) => `"${userName(callee)}" bukan fungsi, jadi tidak bisa dipanggil`],
+  [/^Maximum call stack size exceeded\.?$/, tooDeep],
+  [/^too much recursion$/, tooDeep],
 ];
 
 // Turns an error thrown by the generated JavaScript into a Hokkien Script message.
