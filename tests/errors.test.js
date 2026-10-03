@@ -80,3 +80,14 @@ test("runtime line is null when the stack does not mention the program", () => {
   assert.equal(runtimeLine(new Error("x"), "test.khanina", [1]), null);
   assert.equal(runtimeLine({}, "test.khanina", [1]), null);
 });
+
+test("runtime: a name declared twice across separate scripts", () => {
+  const context = vm.createContext({});
+  vm.runInContext("let x = 1;", context);
+  try {
+    vm.runInContext("let x = 2;", context);
+    assert.fail("expected an error");
+  } catch (error) {
+    assert.equal(runtimeMessage(error), '"x" sudah dibuat');
+  }
+});

@@ -49,6 +49,7 @@ const userName = (name) => name.replace(/^\$/, "");
 const RUNTIME_MESSAGES = [
   [/^(\S+) is not defined$/, (name) => `"${userName(name)}" belum dibuat`],
   [/^Cannot access '(.+)' before initialization$/, (name) => `"${userName(name)}" dipakai sebelum dibuat`],
+  [/^Identifier '(.+)' has already been declared$/, (name) => `"${userName(name)}" sudah dibuat`],
   [/^Assignment to constant variable\.$/, () => "nilai be pian tidak bisa diubah"],
   [/^(.+) is not a function$/, (callee) => `"${userName(callee)}" bukan fungsi, jadi tidak bisa dipanggil`],
   [

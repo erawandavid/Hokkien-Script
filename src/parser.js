@@ -59,12 +59,16 @@ function describe(token) {
   }
 }
 
-export function parse(tokens) {
+// Options, used by the interactive prompt (REPL):
+//   globals               a Map used as the top-level scope, so names created
+//                         by earlier inputs are known; new names are added to it
+//   allowBareExpressions  accept statements such as `1 + 2` whose result is not used
+export function parse(tokens, { globals = new Map(), allowBareExpressions = false } = {}) {
   let index = 0;
   let functionDepth = 0;
   let loopDepth = 0;
   // Each scope maps a name to how it was created: "u", "be pian", "co", or "parameter".
-  const scopes = [new Map()];
+  const scopes = [globals];
 
   const peek = () => tokens[index];
   const next = () => tokens[index++];
@@ -320,11 +324,11 @@ export function parse(tokens) {
   const parseExpressionStatement = () => {
     const start = peek();
     const expression = parseExpression();
-    if (expression.type === "Call") {
-      return node("ExpressionStatement", start, { expression });
-    }
     if (is("operator", "=")) {
       fail("yang bisa diberi nilai hanya nama variabel", start);
+    }
+    if (expression.type === "Call" || allowBareExpressions) {
+      return node("ExpressionStatement", start, { expression });
     }
     if (expression.type === "Binary" && expression.operator === "==" && expression.left.type === "Identifier") {
       fail('hasil perbandingan ini tidak dipakai, maksudnya "=" untuk mengubah nilai?', start);

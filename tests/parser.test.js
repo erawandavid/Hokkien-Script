@@ -334,3 +334,26 @@ test("error: kong inside an expression", () => {
 test("error: unexpected token at the start of a statement", () => {
   throwsAt(")", 'seharusnya ada nilai di sini, bukan ")"', 1, 1);
 });
+
+test("option allowBareExpressions accepts expressions whose result is not used", () => {
+  const { body } = parse(tokenize("1 + 2\nx == 1"), { allowBareExpressions: true });
+  assert.deepEqual(
+    body.map((s) => [s.type, show(s.expression)]),
+    [
+      ["ExpressionStatement", "(+ 1 2)"],
+      ["ExpressionStatement", "(== x 1)"],
+    ],
+  );
+  throwsAt("1 = x", "yang bisa diberi nilai hanya nama variabel", 1, 1);
+});
+
+test("option globals carries names from earlier inputs and receives new ones", () => {
+  const globals = new Map();
+  parse(tokenize("be pian P = 1\nco f() {}"), { globals });
+  assert.deepEqual([...globals], [
+    ["P", "be pian"],
+    ["f", "co"],
+  ]);
+  assert.throws(() => parse(tokenize("P = 2"), { globals }), /"P" itu be pian/);
+  assert.throws(() => parse(tokenize("u f = 1"), { globals }), /"f" sudah dibuat di blok ini/);
+});
