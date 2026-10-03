@@ -1,0 +1,15 @@
+// kong prints si, em si, and bo the Hokkien way
+u lapar = si
+kong(lapar)
+kong(1 > 2)
+kong(bo)
+
+co sapa(nama) {
+  kong("li ho, " + nama + "!")
+}
+kong(sapa("Ameng"))
+
+na si (lapar && !(1 > 2)) {
+  kong("ciak pa be?")
+}
+kong("kamsia", "kamsia")

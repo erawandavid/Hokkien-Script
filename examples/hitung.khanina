@@ -1,0 +1,9 @@
+co tambah(a, b) {
+  tui a + b
+}
+
+u i = 1
+koh (i <= 3) {
+  kong(tambah(i, 10))
+  i = i + 1
+}

@@ -1,0 +1,7 @@
+u umur = 20
+
+na si (umur >= 17) {
+  kong("lu boleh masuk")
+} na bo {
+  kong("paiseh, belum boleh")
+}
