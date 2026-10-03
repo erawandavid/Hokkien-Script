@@ -24,9 +24,11 @@ function readVersion() {
   return JSON.parse(readFileSync(packageJson, "utf8")).version;
 }
 
+// A problem with how the command was used; main() prints it and fails.
+class UsageError extends Error {}
+
 function fail(message) {
-  console.error(formatMessage(message));
-  process.exit(1);
+  throw new UsageError(formatMessage(message));
 }
 
 function parseCommandLine(argv) {
@@ -95,7 +97,17 @@ function runProgram(source, code, sourceLines, file) {
 }
 
 function main() {
-  const { values, positionals } = parseCommandLine(process.argv.slice(2));
+  try {
+    runCommand(process.argv.slice(2));
+  } catch (error) {
+    if (!(error instanceof UsageError)) throw error;
+    console.error(error.message);
+    process.exitCode = 1;
+  }
+}
+
+function runCommand(argv) {
+  const { values, positionals } = parseCommandLine(argv);
 
   if (values.help) {
     console.log(USAGE);
