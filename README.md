@@ -25,12 +25,21 @@ $ khanina hitung.khanina
 13
 ```
 
+**Try it in your browser:** the [Hokkien Script playground](https://erawandavid.github.io/Hokkien-Script/playground/)
+runs programs without installing anything.
+
 ## Installation
 
 You need [Node.js](https://nodejs.org) 20 or newer. Hokkien Script has no
 other dependencies.
 
-Install the `khanina` command straight from GitHub:
+Install the `khanina` command from npm:
+
+```sh
+npm install -g hokkien-script
+```
+
+Or install the latest version straight from GitHub:
 
 ```sh
 npm install -g github:erawandavid/Hokkien-Script
@@ -72,6 +81,32 @@ Other options:
 
 Files must use the `.khanina` extension. Without installing, you can also
 run `node bin/khanina.js file.khanina` from the repository folder.
+
+## Interactive prompt
+
+Run `khanina` without a file to try things out line by line. Names you
+create stay around for the next line, an unclosed `{` continues on the next
+line, and a bare expression shows its value:
+
+```console
+$ khanina
+li ho! Hokkien Script 0.1.0
+Type .help for help, .exit to quit.
+khanina> u umur = 20
+khanina> umur >= 17
+si
+khanina> na si (umur >= 17) {
+... kong("lu boleh masuk")
+... }
+lu boleh masuk
+khanina> .exit
+```
+
+## Editor support
+
+[editors/vscode](editors/vscode) is a Visual Studio Code extension with
+syntax highlighting and snippets for `.khanina` files. Its README explains
+how to install it.
 
 ## Keywords
 
@@ -161,9 +196,19 @@ closed.)
 npm test
 ```
 
+To work on the playground, serve the repository folder with any static web
+server and open `/playground/`, for example:
+
+```sh
+python3 -m http.server 8000
+# then open http://localhost:8000/playground/
+```
+
 The compiler is in [src/](src): `lexer.js` turns source code into tokens,
-`parser.js` builds a syntax tree, and `generator.js` writes JavaScript. The
-`khanina` command lives in [bin/khanina.js](bin/khanina.js).
+`parser.js` builds a syntax tree, and `generator.js` writes JavaScript;
+`repl.js` is the interactive prompt. The `khanina` command lives in
+[bin/khanina.js](bin/khanina.js), and the browser playground in
+[playground/](playground).
 
 ## License
 
