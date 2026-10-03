@@ -13,8 +13,8 @@ const session = (...lines) => {
   return result.stdout
     .split("\n")
     .slice(2)
+    .map((line) => line.replace(/^(?:khanina> |\.\.\. |\| )+/, ""))
     .join("\n")
-    .replace(/khanina> |\.\.\. /g, "")
     .trim()
     .split("\n");
 };

@@ -215,7 +215,9 @@ is translated to JavaScript like this:
 "use strict";
 
 function $kong(...values) {
-  console.log(...values.map((v) => (v === true ? "si" : v === false ? "em si" : v == null ? "bo" : v)));
+  const show = (v) =>
+    v === true ? "si" : v === false ? "em si" : v == null ? "bo" : typeof v === "function" ? `[Function: ${v.name}]` : String(v);
+  console.log(values.map(show).join(" "));
 }
 
 function add(a, b) {
