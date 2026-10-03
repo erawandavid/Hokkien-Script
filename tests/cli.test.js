@@ -68,10 +68,10 @@ test("--help and --version", () => {
   assert.equal(khanina("--version").stdout, `${version}\n`);
 });
 
-test("no arguments shows usage and fails", () => {
-  const { stderr, status } = khanina();
+test("debug options without a file fail", () => {
+  const { stderr, status } = khanina("--tokens");
   assert.equal(status, 1);
-  assert.match(stderr, /^Usage: khanina/);
+  assert.equal(stderr, "paiseh, opsi ini butuh file .khanina, contoh: khanina halo.khanina --tokens\n");
 });
 
 test("error: file without the .khanina extension", () => {

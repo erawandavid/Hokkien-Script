@@ -80,3 +80,31 @@ test("runtime line is null when the stack does not mention the program", () => {
   assert.equal(runtimeLine(new Error("x"), "test.khanina", [1]), null);
   assert.equal(runtimeLine({}, "test.khanina", [1]), null);
 });
+
+test("runtime: a name declared twice across separate scripts", () => {
+  const context = vm.createContext({});
+  vm.runInContext("let x = 1;", context);
+  try {
+    vm.runInContext("let x = 2;", context);
+    assert.fail("expected an error");
+  } catch (error) {
+    assert.equal(runtimeMessage(error), '"x" sudah dibuat');
+  }
+});
+
+test("runtime: messages from Firefox and Safari are translated too", () => {
+  const cases = [
+    ["Can't find variable: x", '"x" belum dibuat'],
+    ["can't access lexical declaration 'y' before initialization", '"y" dipakai sebelum dibuat'],
+    ["Cannot access uninitialized variable.", "nama dipakai sebelum dibuat"],
+    ["redeclaration of let x", '"x" sudah dibuat'],
+    ["invalid assignment to const 'P'", "nilai be pian tidak bisa diubah"],
+    ["Attempted to assign to readonly property.", "nilai be pian tidak bisa diubah"],
+    ["x is not a function. (In 'x(1)', 'x' is 5)", '"x" bukan fungsi, jadi tidak bisa dipanggil'],
+    ["Maximum call stack size exceeded.", "fungsi memanggil dirinya sendiri terlalu dalam, mungkin rekursinya tidak pernah berhenti"],
+    ["too much recursion", "fungsi memanggil dirinya sendiri terlalu dalam, mungkin rekursinya tidak pernah berhenti"],
+  ];
+  for (const [message, expected] of cases) {
+    assert.equal(runtimeMessage(new Error(message)), expected, message);
+  }
+});

@@ -14,7 +14,8 @@
     "SPEC.md"
   ],
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "prepublishOnly": "npm test"
   },
   "engines": {
     "node": ">=20"
@@ -31,5 +32,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/erawandavid/Hokkien-Script.git"
+  },
+  "homepage": "https://github.com/erawandavid/Hokkien-Script#readme",
+  "bugs": {
+    "url": "https://github.com/erawandavid/Hokkien-Script/issues"
   }
 }

@@ -7,10 +7,12 @@ import { parseArgs } from "node:util";
 import vm from "node:vm";
 import { compileWithSourceLines, tokenize, parse, KhaninaError } from "../src/index.js";
 import { formatMessage, codeFrame, runtimeMessage, runtimeLine } from "../src/errors.js";
+import { startRepl } from "../src/repl.js";
 
 const USAGE = `Usage: khanina <file.khanina> [options]
+       khanina
 
-Runs a Hokkien Script program.
+Runs a Hokkien Script program. Without a file, opens an interactive prompt.
 
 Options:
   --out <file.js>  save the translated JavaScript instead of running it
@@ -118,8 +120,10 @@ function runCommand(argv) {
     return;
   }
   if (positionals.length === 0) {
-    console.error(USAGE);
-    process.exitCode = 1;
+    if (values.tokens || values.ast || values.out !== undefined) {
+      fail("opsi ini butuh file .khanina, contoh: khanina halo.khanina --tokens");
+    }
+    startRepl({ version: readVersion() });
     return;
   }
   if (positionals.length > 1) {
